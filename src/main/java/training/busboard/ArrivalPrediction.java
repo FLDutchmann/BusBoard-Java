@@ -6,5 +6,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ArrivalPrediction {
     public String vehicleId;
     public String expectedArrival;
-
 }
