@@ -12,6 +12,7 @@ public class Main {
     private static Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
     public static void main(String args[]) {
 
+
         Scanner myObj = new Scanner(System.in);
         System.out.println("Please input the postcode");
         String postcode = myObj.nextLine();

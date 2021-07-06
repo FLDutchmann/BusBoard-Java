@@ -32,7 +32,7 @@ public class tflAPI {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class StopPointByLonAndLatWrapper {
+    public static class StopPointByLonAndLatWrapper {
         List<StopPointByLonAndLat> stopPoints;
 
         public List<StopPointByLonAndLat> getStopPoints() {
