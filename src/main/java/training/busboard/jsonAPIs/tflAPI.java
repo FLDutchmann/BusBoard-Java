@@ -21,14 +21,15 @@ public class tflAPI {
     }
 
     public static List<ArrivalPrediction> getArrivalPredictionsByStopPointId(String id){
-        return call(new GenericType<List<ArrivalPrediction>>(){}, "/"+id+"/Arrivals");
+        return call(new GenericType<List<ArrivalPrediction>>(){}, String.format("/%s/Arrivals", id));
     }
 
     //https://api.tfl.gov.uk/StopPoint/?lat={lat}&lon={lon}&stopTypes={stopTypes}[&radius][&useStopPointHierarchy][&modes][&categories][&returnLines]
 
     public static List<StopPointByLonAndLat> getStopPointsByLonAndLat(Double longitude, Double latitude){
-        return call(new GenericType<StopPointByLonAndLatWrapper>(){}, "/?lat=" + latitude + "&lon=" + longitude +
-                "&stopTypes=NaptanPublicBusCoachTram").stopPoints;
+        return call(new GenericType<StopPointByLonAndLatWrapper>(){},
+                String.format("/?lat=%f&lon=%f&stopTypes=NaptanPublicBusCoachTram",latitude,longitude))
+                .stopPoints;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

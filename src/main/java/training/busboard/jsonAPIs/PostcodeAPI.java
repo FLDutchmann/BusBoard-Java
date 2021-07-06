@@ -19,6 +19,6 @@ public class PostcodeAPI {
     }
 
     public static PostcodeInfo getPostcodeInfo(String postcode) {
-        return call(new GenericType<ResultWrapper<PostcodeInfo>>(){}, "/"+postcode).getResult();
+        return call(new GenericType<ResultWrapper<PostcodeInfo>>(){}, String.format("/%s",postcode)).getResult();
     }
 }
