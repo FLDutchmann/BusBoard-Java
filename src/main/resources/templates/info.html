@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta http-equiv="refresh" content="30" >
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+
+    <!--@thymesVar id="busInfo" type="training.busboard.web.BusInfo"-->
+
+    <head>
+        <title>Bus Information</title>
+    </head>
+    <body>
+        <div layout:fragment="content" class="container body-content">
+            <h2>Bus Information</h2>
+            <div>
+                <p>You entered postcode <span th:text="${busInfo.postcode}"></span></p>
+            </div>
+            <h2>The next buses arriving at the two nearest bus stops are:</h2>
+            <span th:each="stopAndArrivals: ${busInfo.busStopsAndArrivals}">
+                <h3>Bus stop <span th:text="${stopAndArrivals.busStop.commonName}"></span></h3>
+                <p th:each="arrival: ${stopAndArrivals.arrivals}">
+                    Line <span th:text="${arrival.lineName}"></span> bus towards <span th:text="${arrival.towards}"></span> will arrive at <span th:text="${arrival.expectedArrival}"></span>
+                </p>
+            </span>
+        </div>
+    </body>
+</html>
