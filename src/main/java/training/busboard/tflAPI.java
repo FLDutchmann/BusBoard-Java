@@ -22,4 +22,12 @@ public class tflAPI {
     public static List<ArrivalPrediction> getArrivalPredictionsByStopPointId(String id){
         return call(new GenericType<List<ArrivalPrediction>>(){}, "/"+id+"/Arrivals");
     }
+
+    //https://api.tfl.gov.uk/StopPoint/?lat={lat}&lon={lon}&stopTypes={stopTypes}[&radius][&useStopPointHierarchy][&modes][&categories][&returnLines]
+
+    public static List<ArrivalPrediction> getStopPointsByLonAndLat(Double longitude, Double latitude){
+        return call(new GenericType<List<ArrivalPrediction>>(){}, "/?lat=" + latitude + "&lon=" + longitude +
+                "&stopTypes=NaptanPublicBusCoachTram");
+    }
+
 }
