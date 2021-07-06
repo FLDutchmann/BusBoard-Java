@@ -1,5 +1,6 @@
 package training.busboard;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import javax.ws.rs.client.Client;
@@ -25,9 +26,23 @@ public class tflAPI {
 
     //https://api.tfl.gov.uk/StopPoint/?lat={lat}&lon={lon}&stopTypes={stopTypes}[&radius][&useStopPointHierarchy][&modes][&categories][&returnLines]
 
-    public static List<ArrivalPrediction> getStopPointsByLonAndLat(Double longitude, Double latitude){
-        return call(new GenericType<List<ArrivalPrediction>>(){}, "/?lat=" + latitude + "&lon=" + longitude +
-                "&stopTypes=NaptanPublicBusCoachTram");
+    public static List<StopPointByLonAndLat> getStopPointsByLonAndLat(Double longitude, Double latitude){
+        return call(new GenericType<StopPointByLonAndLatWrapper>(){}, "/?lat=" + latitude + "&lon=" + longitude +
+                "&stopTypes=NaptanPublicBusCoachTram").stopPoints;
     }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class StopPointByLonAndLatWrapper {
+        List<StopPointByLonAndLat> stopPoints;
+
+        public List<StopPointByLonAndLat> getStopPoints() {
+            return stopPoints;
+        }
+
+        public void setStopPoints(List<StopPointByLonAndLat> stopPoints) {
+            this.stopPoints = stopPoints;
+        }
+    }
+
 
 }

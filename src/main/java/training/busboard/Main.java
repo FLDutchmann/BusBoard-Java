@@ -5,14 +5,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
     private static Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
@@ -23,19 +17,22 @@ public class Main {
         String postcode = myObj.nextLine();
 
         PostcodeInfo postcodeInfo = PostcodeAPI.getPostcodeInfo(postcode);
-        System.out.println("Longitude: " + postcodeInfo.longitude);
-        System.out.println("Latitude: " + postcodeInfo.latitude);
-        System.out.println("Country: " + postcodeInfo.country);
 
-        List<ArrivalPrediction> response = tflAPI.getStopPointsByLonAndLat(postcodeInfo.longitude, postcodeInfo.latitude);
+        List<StopPointByLonAndLat> response = tflAPI.getStopPointsByLonAndLat(postcodeInfo.longitude, postcodeInfo.latitude);
 
-        List<ArrivalPrediction> sortedResponse = response.stream().sorted(
-                (t1, t2) -> t1.expectedArrival.compareTo(t2.expectedArrival)
-        ).limit(5).collect(Collectors.toList());
-        for (ArrivalPrediction bus: sortedResponse) {
-            System.out.println(bus.vehicleId + " " + bus.expectedArrival);
+        if(response.isEmpty()){
+            System.out.println("No London bus stops found near your postcode");
+            return;
         }
-*/
-    }
 
+        response.stream().limit(2).forEach( (stopPoint) -> {
+            System.out.println("Expected arrivals at stop " + stopPoint.commonName + ":");
+            List<ArrivalPrediction> arrivals = tflAPI.getArrivalPredictionsByStopPointId(stopPoint.naptanId);
+            arrivals.stream().limit(5).forEach((prediction) -> {
+                System.out.println("Line " + prediction.lineName + " bus towards " +
+                                   prediction.towards + " will arrive at " + prediction.expectedArrival);
+            });
+        });
+
+    }
 }	
