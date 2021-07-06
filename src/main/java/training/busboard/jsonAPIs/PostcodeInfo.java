@@ -1,4 +1,4 @@
-package training.busboard;
+package training.busboard.jsonAPIs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

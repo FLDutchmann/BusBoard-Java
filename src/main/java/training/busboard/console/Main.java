@@ -1,7 +1,7 @@
-package training.busboard;
-
+package training.busboard.console;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import training.busboard.jsonAPIs.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,21 +19,22 @@ public class Main {
 
         PostcodeInfo postcodeInfo = PostcodeAPI.getPostcodeInfo(postcode);
 
-        List<StopPointByLonAndLat> response = tflAPI.getStopPointsByLonAndLat(postcodeInfo.longitude, postcodeInfo.latitude);
+        List<StopPointByLonAndLat> response = tflAPI.getStopPointsByLonAndLat(postcodeInfo.getLongitude(), postcodeInfo.getLatitude());
 
         if(response.isEmpty()){
             System.out.println("No London bus stops found near your postcode");
             return;
         }
 
-        response.stream().limit(2).forEach( (stopPoint) -> {
+        List<BusStopAndArrivals> busStopsAndArrivals = TransportAPI.getNextArrivalsAtBusStopsNearPostcode(postcode);
+        for(BusStopAndArrivals busStopAndArrivals: busStopsAndArrivals) {
+            StopPointByLonAndLat stopPoint = busStopAndArrivals.getBusStop();
             System.out.println("Expected arrivals at stop " + stopPoint.commonName + ":");
-            List<ArrivalPrediction> arrivals = tflAPI.getArrivalPredictionsByStopPointId(stopPoint.naptanId);
-            arrivals.stream().limit(5).forEach((prediction) -> {
+            for(ArrivalPrediction prediction: busStopAndArrivals.getArrivals()) {
                 System.out.println("Line " + prediction.lineName + " bus towards " +
-                                   prediction.towards + " will arrive at " + prediction.expectedArrival);
-            });
-        });
+                        prediction.towards + " will arrive at " + prediction.expectedArrival);
+            }
+        }
 
     }
 }	

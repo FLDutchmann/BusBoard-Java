@@ -1,4 +1,4 @@
-package training.busboard;
+package training.busboard.jsonAPIs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,6 +20,6 @@ public class ResultWrapper<T>{
         this.result = result;
     }
 
-    String status;
-    T result;
+    public String status;
+    public T result;
 }

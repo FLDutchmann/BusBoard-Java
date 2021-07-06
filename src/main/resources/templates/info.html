@@ -14,6 +14,13 @@
             <div>
                 <p>You entered postcode <span th:text="${busInfo.postcode}"></span></p>
             </div>
+            <h2>The next buses arriving at the two nearest bus stops are:</h2>
+            <span th:each="stopAndArrivals: ${busInfo.busStopsAndArrivals}">
+                <h3>Bus stop <span th:text="${stopAndArrivals.busStop.commonName}"></span></h3>
+                <p th:each="arrival: ${stopAndArrivals.arrivals}">
+                    Line <span th:text="${arrival.lineName}"></span> bus towards <span th:text="${arrival.towards}"></span> will arrive at <span th:text="${arrival.expectedArrival}"></span>
+                </p>
+            </span>
         </div>
     </body>
 </html>

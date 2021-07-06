@@ -1,4 +1,4 @@
-package training.busboard;
+package training.busboard.jsonAPIs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -10,11 +10,11 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 public class tflAPI {
-    private static String stopPointURL = "https://api.tfl.gov.uk/StopPoint";
+    private static String endpointURL = "https://api.tfl.gov.uk/StopPoint";
     private static Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
 
     private static <T extends Object> T call(GenericType<T> type, String method) {
-        T response = client.target(stopPointURL+method)
+        T response = client.target(endpointURL+method)
                 .request(MediaType.APPLICATION_JSON)
                 .get(type);
         return response;

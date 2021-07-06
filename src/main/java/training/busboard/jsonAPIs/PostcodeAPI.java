@@ -1,4 +1,4 @@
-package training.busboard;
+package training.busboard.jsonAPIs;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
@@ -6,8 +6,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
 
 public class PostcodeAPI {
     private static String endpointURL = "https://api.postcodes.io/postcodes";
@@ -21,6 +19,6 @@ public class PostcodeAPI {
     }
 
     public static PostcodeInfo getPostcodeInfo(String postcode) {
-        return call(new GenericType<ResultWrapper<PostcodeInfo>>(){}, "/"+postcode).result;
+        return call(new GenericType<ResultWrapper<PostcodeInfo>>(){}, "/"+postcode).getResult();
     }
 }
